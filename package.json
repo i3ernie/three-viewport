@@ -1,10 +1,10 @@
 {
-  "name": "threex.viewport",
+  "name": "three-viewport",
   "version": "0.20.71504",
   "license": "MIT",
   "description": "viewport for three.js",
   "author": "i3ernie",
-  "repository": "https://gitlab.mhkservice.net/onpla/npm/onpla_v5.x_lib",
+  "repository": "https://github.com/i3ernie/three-viewport.git",
   "contributors": [],
   "keywords": [
     "three.js",
