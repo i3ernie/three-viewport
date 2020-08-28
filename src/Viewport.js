@@ -141,6 +141,8 @@ import RenderingLoop from "./loops/RenderingLoop.js";
             this.raycaster = new PointerRay( this );
 
             this.dispatchEvent( {type: "initalized" });
+            
+            return this;
         },
     
         start : function(){
@@ -149,6 +151,8 @@ import RenderingLoop from "./loops/RenderingLoop.js";
             this.loop.start();
 
             this.dispatchEvent({ type:"started" });
+            
+            return this;
         },
         
         stop : function(){
@@ -156,6 +160,8 @@ import RenderingLoop from "./loops/RenderingLoop.js";
             this.loop.stop();
             
             this.dispatchEvent({ type:"stopped" });
+            
+            return this;
         },
 
         onUpdateScene : function( ev ){
@@ -164,10 +170,10 @@ import RenderingLoop from "./loops/RenderingLoop.js";
         }
     });
  
-    Viewport.prototype.disableControl = function(){
+    Viewport.prototype.disableControl = function() {
         this.control.enabled = false;
     };
-    Viewport.prototype.enableControl = function(){
+    Viewport.prototype.enableControl = function() {
         this.control.enabled = true;
     };
     
