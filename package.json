@@ -12,10 +12,10 @@
     "Viewport"
   ],
   "dependencies": {
-    "jshint": "^2.11.1",
     "three": "^0.118"
   },
   "devDependencies": {
+    "jshint": "^2.11.1",
     "@rollup/plugin-inject": "latest",
     "@rollup/plugin-replace": "latest",
     "customevent-polyfill": "git://github.com/d4tocchini/customevent-polyfill.git",
