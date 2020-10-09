@@ -129,7 +129,7 @@ define(['exports', 'three', 'OrbitControls'], function (exports, three_module_js
 
 
         var defaults = {
-            $vp             : window,
+            $vp             : window.document.getElementsByTagName("body")[0],
             antialias       : "default", //none, default, fxaa, smaa
             renderer        : "standard", //"deferred", "standard"
             postprocessing  : false,
@@ -139,7 +139,7 @@ define(['exports', 'three', 'OrbitControls'], function (exports, three_module_js
             opacity         : 0.5,
             camFov          : 45
         };
-
+        
         var initRenderer = function(){ 
             
             var antialias = (this.options.antialias === "default")? true : false;
@@ -223,7 +223,7 @@ define(['exports', 'three', 'OrbitControls'], function (exports, three_module_js
         };
 
         Object.assign( Viewport.prototype, three_module_js.EventDispatcher.prototype, {
-
+        
             init : function() {
 
                 initRenderer.call( this ).dispatchEvent({ type:"rendererInitalized" });
@@ -245,25 +245,31 @@ define(['exports', 'three', 'OrbitControls'], function (exports, three_module_js
                 //loop
                 this.scene.addEventListener( 'update', this.onUpdateScene.bind(this) );
 
-
+                
                 this.raycaster = new PointerRay( this );
 
                 this.dispatchEvent( {type: "initalized" });
+                
+                return this;
             },
-
+        
             start : function(){
                 //this.DomEvents.addEventListener( this.scene, "click", this.onClick );
                 this.clock.getDelta();
                 this.loop.start();
 
                 this.dispatchEvent({ type:"started" });
+                
+                return this;
             },
-
+            
             stop : function(){
                 //this.DomEvents.removeEventListener( this.scene, "click", this.onClick );
                 this.loop.stop();
                 
                 this.dispatchEvent({ type:"stopped" });
+                
+                return this;
             },
 
             onUpdateScene : function( ev ){
@@ -272,10 +278,10 @@ define(['exports', 'three', 'OrbitControls'], function (exports, three_module_js
             }
         });
      
-        Viewport.prototype.disableControl = function(){
+        Viewport.prototype.disableControl = function() {
             this.control.enabled = false;
         };
-        Viewport.prototype.enableControl = function(){
+        Viewport.prototype.enableControl = function() {
             this.control.enabled = true;
         };
 

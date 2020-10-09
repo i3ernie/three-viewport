@@ -131,7 +131,7 @@ RenderingLoop.prototype = Object.assign( Object.create( Loop.prototype ), {
 
 
     var defaults = {
-        $vp             : window,
+        $vp             : window.document.getElementsByTagName("body")[0],
         antialias       : "default", //none, default, fxaa, smaa
         renderer        : "standard", //"deferred", "standard"
         postprocessing  : false,
@@ -141,7 +141,7 @@ RenderingLoop.prototype = Object.assign( Object.create( Loop.prototype ), {
         opacity         : 0.5,
         camFov          : 45
     };
-
+    
     var initRenderer = function(){ 
         
         var antialias = (this.options.antialias === "default")? true : false;
