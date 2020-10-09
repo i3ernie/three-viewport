@@ -1,5 +1,6 @@
 import { Raycaster, Vector2, Clock, EventDispatcher, WebGLRenderer, Color, Scene, PerspectiveCamera } from '../../three/build/three.module.js';
 import { OrbitControls } from '../../three/examples/jsm/controls/OrbitControls.js';
+export { OrbitControls } from '../../three/examples/jsm/controls/OrbitControls.js';
 
 /* 
  * To change this license header, choose License Headers in Project Properties.
@@ -150,7 +151,7 @@ RenderingLoop.prototype = Object.assign( Object.create( Loop.prototype ), {
             antialias	: antialias
         });    
 
-        this.renderer.setSize( this.options.$vp.innerWidth, this.options.$vp.innerHeight );
+        this.renderer.setSize( this.options.$vp.clientWidth, this.options.$vp.clientHeight );
         this.renderer.shadowMap.enabled = this.options.shadowMap;
         this.renderer.shadowMapSoft = true;
         this.renderer.setClearColor( new Color( this.options.clearColor ), this.options.opacity );
@@ -165,7 +166,7 @@ RenderingLoop.prototype = Object.assign( Object.create( Loop.prototype ), {
     };
     
     var initCamera = function(){
-        this.camera = this.options.camera || new PerspectiveCamera(this.options.camFov, this.options.$vp.innerWidth / this.options.$vp.innerHeight, 1, 20000);
+        this.camera = this.options.camera || new PerspectiveCamera(this.options.camFov, this.options.$vp.clientWidth / this.options.$vp.clientHeight, 1, 20000);
         return this;
     };
 
@@ -188,23 +189,23 @@ RenderingLoop.prototype = Object.assign( Object.create( Loop.prototype ), {
 
     var initDomElement = function(){
         var VP = this;
-        var $vp = VP.options.$vp;
-
-        if ( defaults.$vp === window || this.options.$vp[0] === window ) {
+        var $vp = this.options.$vp;
+       
+        if ( this.options.$vp === window || this.options.$vp[0] === window ) { 
             window.document.body.appendChild( this.renderer.domElement );
         }
-        else {
-            this.options.$vp.append( this.renderer.domElement );
+        else { 
+            this.options.$vp.appendChild( this.renderer.domElement );
         }
 
         window.addEventListener( 'resize', onWindowResize, false );
 
         function onWindowResize() {
 
-            VP.camera.aspect = $vp.innerWidth / $vp.innerHeight;
+            VP.camera.aspect = $vp.clientWidth / $vp.clientHeight;
             VP.camera.updateProjectionMatrix();
         
-            VP.renderer.setSize( $vp.innerWidth, $vp.innerHeight );
+            VP.renderer.setSize( $vp.clientWidth, $vp.clientHeight );
         }
 
         return this;
@@ -226,11 +227,11 @@ RenderingLoop.prototype = Object.assign( Object.create( Loop.prototype ), {
     Object.assign( Viewport.prototype, EventDispatcher.prototype, {
     
         init : function() {
-                    
+
             initRenderer.call( this ).dispatchEvent({ type:"rendererInitalized" });
-            
+
             initScene.call( this ).dispatchEvent({ type:"sceneInitalized" });
-            
+
             initCamera.call( this );
             this.scene.add( this.camera );
             this.dispatchEvent({ type:"cameraInitalized" });
@@ -250,6 +251,8 @@ RenderingLoop.prototype = Object.assign( Object.create( Loop.prototype ), {
             this.raycaster = new PointerRay( this );
 
             this.dispatchEvent( {type: "initalized" });
+            
+            return this;
         },
     
         start : function(){
@@ -258,6 +261,8 @@ RenderingLoop.prototype = Object.assign( Object.create( Loop.prototype ), {
             this.loop.start();
 
             this.dispatchEvent({ type:"started" });
+            
+            return this;
         },
         
         stop : function(){
@@ -265,6 +270,8 @@ RenderingLoop.prototype = Object.assign( Object.create( Loop.prototype ), {
             this.loop.stop();
             
             this.dispatchEvent({ type:"stopped" });
+            
+            return this;
         },
 
         onUpdateScene : function( ev ){
@@ -273,12 +280,13 @@ RenderingLoop.prototype = Object.assign( Object.create( Loop.prototype ), {
         }
     });
  
-    Viewport.prototype.disableControl = function(){
+    Viewport.prototype.disableControl = function() {
         this.control.enabled = false;
     };
-    Viewport.prototype.enableControl = function(){
+    Viewport.prototype.enableControl = function() {
         this.control.enabled = true;
     };
 
 export default Viewport;
+export { RenderingLoop, Viewport };
 //# sourceMappingURL=viewport.es.js.map
