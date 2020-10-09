@@ -3,12 +3,11 @@ import WoodBox from "./WoodBox.js";
 import Viewport from "../src/Viewport.js";
 
 
+    let el = document.getElementById("viewport");
     let VP = new Viewport();
 
-    VP.init();
-    VP.start();
+    VP.init().start();
 
-   // VP.DomEvents = new Domevents( VP.camera, VP.renderer.domElement );
 
     VP.camera.position.z = 400;
 

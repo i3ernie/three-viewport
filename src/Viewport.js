@@ -21,7 +21,7 @@ import RenderingLoop from "./loops/RenderingLoop.js";
 
 
     const defaults = {
-        $vp             : window,
+        $vp             : window.document.getElementsByTagName("body")[0],
         antialias       : "default", //none, default, fxaa, smaa
         renderer        : "standard", //"deferred", "standard"
         postprocessing  : false,
@@ -31,7 +31,7 @@ import RenderingLoop from "./loops/RenderingLoop.js";
         opacity         : 0.5,
         camFov          : 45
     };
-
+    
     const initRenderer = function(){ 
         
         let antialias = (this.options.antialias === "default")? true : false;
