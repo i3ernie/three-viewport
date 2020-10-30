@@ -1,6 +1,6 @@
 {
   "name": "three-viewport",
-  "version": "0.20.71504",
+  "version": "0.122.103001",
   "license": "MIT",
   "description": "viewport for three.js",
   "author": "i3ernie",
@@ -12,10 +12,9 @@
     "Viewport"
   ],
   "dependencies": {
-    "three": "^0.118"
+    "three": "^0.122"
   },
   "devDependencies": {
-    "jshint": "^2.11.1",
     "@rollup/plugin-inject": "latest",
     "@rollup/plugin-replace": "latest",
     "customevent-polyfill": "git://github.com/d4tocchini/customevent-polyfill.git",
@@ -26,6 +25,7 @@
     "gulp-rollup": "latest",
     "gulp-sourcemaps": "latest",
     "gulp-uglify": "latest",
+    "jshint": "^2.11.1",
     "lodash": "latest",
     "requirejs": "latest",
     "requirejs-babel": "git://github.com/mikach/requirejs-babel.git",
