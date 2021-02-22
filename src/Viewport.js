@@ -167,14 +167,21 @@ import RenderingLoop from "./loops/RenderingLoop.js";
         onUpdateScene : function( ev ){
         },
         onClick : function( ev ){
+        },
+
+        disableControl : function() {
+            this.control.enabled = false;
+        },
+        enableControl = function() {
+            this.control.enabled = true;
         }
     });
  
-    Viewport.prototype.disableControl = function() {
-        this.control.enabled = false;
-    };
-    Viewport.prototype.enableControl = function() {
-        this.control.enabled = true;
+    Viewport.make = function( opts ){
+        let VP = new Viewport( opts );
+        VP.init();
+        VP.start();
+        return VP;
     };
     
 
