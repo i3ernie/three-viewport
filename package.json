@@ -12,24 +12,20 @@
     "Viewport"
   ],
   "dependencies": {
-    "three": "^0.122"
+    "three": "^0.131"
   },
   "devDependencies": {
     "@rollup/plugin-inject": "latest",
     "@rollup/plugin-replace": "latest",
-    "customevent-polyfill": "git://github.com/d4tocchini/customevent-polyfill.git",
     "gulp": "^4.0.2",
     "gulp-better-rollup": "latest",
     "gulp-load-plugins": "latest",
-    "gulp-requirejs": "^1.3.0",
     "gulp-rollup": "latest",
     "gulp-sourcemaps": "latest",
     "gulp-uglify": "latest",
     "jshint": "^2.11.1",
     "lodash": "latest",
     "requirejs": "latest",
-    "requirejs-babel": "git://github.com/mikach/requirejs-babel.git",
-    "requirejs-plugins": "^1.0.2",
     "rollup": "latest",
     "rollup-plugin-buble": "latest",
     "rollup-plugin-node-resolve": "^5.2.0"
