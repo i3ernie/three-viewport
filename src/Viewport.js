@@ -106,17 +106,18 @@ import RenderingLoop from "./loops/RenderingLoop.js";
      * @param {type} obj
      * @returns {ViewportL#14.Viewport}
      */
-    const Viewport = function( obj )
-    {        
-        this.options = Object.assign({}, defaults, obj );
-        
-        //this.model = new Model();
-        this.clock = new Clock();
-    };
+    class Viewport extends EventDispatcher { 
+        constructor ( obj ) {       
+            
+            super();
+            
+            this.options = Object.assign({}, defaults, obj );
+            
+            //this.model = new Model();
+            this.clock = new Clock();
+        }
 
-    Object.assign( Viewport.prototype, EventDispatcher.prototype, {
-    
-        init : function() {
+        init () {
 
             initRenderer.call( this ).dispatchEvent({ type:"rendererInitalized" });
 
@@ -143,9 +144,9 @@ import RenderingLoop from "./loops/RenderingLoop.js";
             this.dispatchEvent( {type: "initalized" });
             
             return this;
-        },
+        }
     
-        start : function(){
+        start ( opts ) {
             //this.DomEvents.addEventListener( this.scene, "click", this.onClick );
             this.clock.getDelta();
             this.loop.start();
@@ -153,29 +154,29 @@ import RenderingLoop from "./loops/RenderingLoop.js";
             this.dispatchEvent({ type:"started" });
             
             return this;
-        },
+        }
         
-        stop : function(){
+        stop ( opts ) {
             //this.DomEvents.removeEventListener( this.scene, "click", this.onClick );
             this.loop.stop();
             
             this.dispatchEvent({ type:"stopped" });
             
             return this;
-        },
+        }
 
-        onUpdateScene : function( ev ){
-        },
-        onClick : function( ev ){
-        },
+        onUpdateScene ( ev ) {
+        }
+        onClick ( ev ) {
+        }
 
-        disableControl : function() {
+        disableControl () {
             this.control.enabled = false;
-        },
-        enableControl = function() {
+        }
+        enableControl () {
             this.control.enabled = true;
         }
-    });
+    };
  
     Viewport.make = function( opts ){
         let VP = new Viewport( opts );
