@@ -1,4 +1,4 @@
-import { Raycaster, Vector2, Clock, EventDispatcher, WebGLRenderer, Color, Scene, PerspectiveCamera } from '../../three/build/three.module.js';
+import { Raycaster, Vector2, EventDispatcher, WebGLRenderer, Color, Scene, PerspectiveCamera, Clock } from '../../three/build/three.module.js';
 import { OrbitControls } from '../../three/examples/jsm/controls/OrbitControls.js';
 export { OrbitControls } from '../../three/examples/jsm/controls/OrbitControls.js';
 
@@ -216,17 +216,22 @@ RenderingLoop.prototype = Object.assign( Object.create( Loop.prototype ), {
      * @param {type} obj
      * @returns {ViewportL#14.Viewport}
      */
-    var Viewport = function( obj )
-    {        
-        this.options = Object.assign({}, defaults, obj );
-        
-        //this.model = new Model();
-        this.clock = new Clock();
-    };
+    var Viewport = /*@__PURE__*/(function (EventDispatcher) {
+    function Viewport ( obj ) {       
+            
+            EventDispatcher.call(this);
+            
+            this.options = Object.assign({}, defaults, obj );
+            
+            //this.model = new Model();
+            this.clock = new Clock();
+        }
 
-    Object.assign( Viewport.prototype, EventDispatcher.prototype, {
-    
-        init : function() {
+    if ( EventDispatcher ) Viewport.__proto__ = EventDispatcher;
+    Viewport.prototype = Object.create( EventDispatcher && EventDispatcher.prototype );
+    Viewport.prototype.constructor = Viewport;
+
+        Viewport.prototype.init = function init () {
 
             initRenderer.call( this ).dispatchEvent({ type:"rendererInitalized" });
 
@@ -253,9 +258,9 @@ RenderingLoop.prototype = Object.assign( Object.create( Loop.prototype ), {
             this.dispatchEvent( {type: "initalized" });
             
             return this;
-        },
+        };
     
-        start : function(){
+        Viewport.prototype.start = function start ( opts ) {
             //this.DomEvents.addEventListener( this.scene, "click", this.onClick );
             this.clock.getDelta();
             this.loop.start();
@@ -263,30 +268,37 @@ RenderingLoop.prototype = Object.assign( Object.create( Loop.prototype ), {
             this.dispatchEvent({ type:"started" });
             
             return this;
-        },
+        };
         
-        stop : function(){
+        Viewport.prototype.stop = function stop ( opts ) {
             //this.DomEvents.removeEventListener( this.scene, "click", this.onClick );
             this.loop.stop();
             
             this.dispatchEvent({ type:"stopped" });
             
             return this;
-        },
+        };
 
-        onUpdateScene : function( ev ){
-        },
-        onClick : function( ev ){
-        }
-    });
- 
-    Viewport.prototype.disableControl = function() {
-        this.control.enabled = false;
-    };
-    Viewport.prototype.enableControl = function() {
-        this.control.enabled = true;
+        Viewport.prototype.onUpdateScene = function onUpdateScene ( ev ) {
+        };
+        Viewport.prototype.onClick = function onClick ( ev ) {
+        };
+
+        Viewport.prototype.disableControl = function disableControl () {
+            this.control.enabled = false;
+        };
+        Viewport.prototype.enableControl = function enableControl () {
+            this.control.enabled = true;
+        };
+
+    return Viewport;
+}(EventDispatcher)); 
+    Viewport.make = function( opts ){
+        var VP = new Viewport( opts );
+        VP.init();
+        VP.start();
+        return VP;
     };
 
-export default Viewport;
-export { RenderingLoop, Viewport };
+export { RenderingLoop, Viewport, Viewport as default };
 //# sourceMappingURL=viewport.es.js.map

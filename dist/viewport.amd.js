@@ -214,17 +214,22 @@ define(['exports', 'three', 'OrbitControls'], function (exports, three_module_js
          * @param {type} obj
          * @returns {ViewportL#14.Viewport}
          */
-        var Viewport = function( obj )
-        {        
-            this.options = Object.assign({}, defaults, obj );
-            
-            //this.model = new Model();
-            this.clock = new three_module_js.Clock();
-        };
+        var Viewport = /*@__PURE__*/(function (EventDispatcher) {
+        function Viewport ( obj ) {       
+                
+                EventDispatcher.call(this);
+                
+                this.options = Object.assign({}, defaults, obj );
+                
+                //this.model = new Model();
+                this.clock = new three_module_js.Clock();
+            }
 
-        Object.assign( Viewport.prototype, three_module_js.EventDispatcher.prototype, {
-        
-            init : function() {
+        if ( EventDispatcher ) Viewport.__proto__ = EventDispatcher;
+        Viewport.prototype = Object.create( EventDispatcher && EventDispatcher.prototype );
+        Viewport.prototype.constructor = Viewport;
+
+            Viewport.prototype.init = function init () {
 
                 initRenderer.call( this ).dispatchEvent({ type:"rendererInitalized" });
 
@@ -251,9 +256,9 @@ define(['exports', 'three', 'OrbitControls'], function (exports, three_module_js
                 this.dispatchEvent( {type: "initalized" });
                 
                 return this;
-            },
+            };
         
-            start : function(){
+            Viewport.prototype.start = function start ( opts ) {
                 //this.DomEvents.addEventListener( this.scene, "click", this.onClick );
                 this.clock.getDelta();
                 this.loop.start();
@@ -261,28 +266,36 @@ define(['exports', 'three', 'OrbitControls'], function (exports, three_module_js
                 this.dispatchEvent({ type:"started" });
                 
                 return this;
-            },
+            };
             
-            stop : function(){
+            Viewport.prototype.stop = function stop ( opts ) {
                 //this.DomEvents.removeEventListener( this.scene, "click", this.onClick );
                 this.loop.stop();
                 
                 this.dispatchEvent({ type:"stopped" });
                 
                 return this;
-            },
+            };
 
-            onUpdateScene : function( ev ){
-            },
-            onClick : function( ev ){
-            }
-        });
-     
-        Viewport.prototype.disableControl = function() {
-            this.control.enabled = false;
-        };
-        Viewport.prototype.enableControl = function() {
-            this.control.enabled = true;
+            Viewport.prototype.onUpdateScene = function onUpdateScene ( ev ) {
+            };
+            Viewport.prototype.onClick = function onClick ( ev ) {
+            };
+
+            Viewport.prototype.disableControl = function disableControl () {
+                this.control.enabled = false;
+            };
+            Viewport.prototype.enableControl = function enableControl () {
+                this.control.enabled = true;
+            };
+
+        return Viewport;
+    }(three_module_js.EventDispatcher)); 
+        Viewport.make = function( opts ){
+            var VP = new Viewport( opts );
+            VP.init();
+            VP.start();
+            return VP;
         };
 
     Object.defineProperty(exports, 'OrbitControls', {
@@ -293,7 +306,7 @@ define(['exports', 'three', 'OrbitControls'], function (exports, three_module_js
     });
     exports.RenderingLoop = RenderingLoop;
     exports.Viewport = Viewport;
-    exports.default = Viewport;
+    exports['default'] = Viewport;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 
