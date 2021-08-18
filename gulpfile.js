@@ -162,7 +162,7 @@ const build_viewportES = function( done ){
             buble({
 				transforms: {
 					arrow: false,
-					classes: true
+					classes: false
 				}
             })
         ]
