@@ -294,5 +294,6 @@ RenderingLoop.prototype = Object.assign( Object.create( Loop.prototype ), {
         return VP;
     };
 
-export { RenderingLoop, Viewport, Viewport as default };
+export default Viewport;
+export { RenderingLoop, Viewport };
 //# sourceMappingURL=viewport.es.js.map
