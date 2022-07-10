@@ -1,4 +1,4 @@
-import * as THREE from "../node_modules/three/build/three.module.js";
+import * as THREE from "three";
 import WoodBox from "./WoodBox.js";
 import Viewport from "../src/Viewport.js";
 

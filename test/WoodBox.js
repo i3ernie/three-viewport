@@ -2,15 +2,13 @@ import {TextureLoader, BoxBufferGeometry, MeshBasicMaterial, Mesh} from "../node
 
 var texture = new TextureLoader().load( 'textures/crate.gif' );
 
-const WoodBox = function( geo, mat ){
-    geo = geo || new BoxBufferGeometry( 200, 200, 200 );
-    mat = mat || new MeshBasicMaterial( { map: texture } );
+class WoodBox extends Mesh {
+    constructor ( geo, mat ) {
+        geo = geo || new BoxBufferGeometry( 200, 200, 200 );
+        mat = mat || new MeshBasicMaterial( { map: texture } );
 
-    Mesh.call( this, geo,mat );
+        super( geo,mat );
+    }
 };
-
-WoodBox.prototype = Object.assign( Object.create( Mesh.prototype ), {
-    constructor : WoodBox
-});
 
 export default  WoodBox;

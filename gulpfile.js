@@ -118,7 +118,7 @@ const build_viewport = function( done ){
             buble({
 				transforms: {
 					arrow: false,
-					classes: true
+					classes: false
 				}
 			})
         ]
@@ -162,7 +162,7 @@ const build_viewportES = function( done ){
             buble({
 				transforms: {
 					arrow: false,
-					classes: true
+					classes: false
 				}
             })
         ]
@@ -171,7 +171,8 @@ const build_viewportES = function( done ){
             file: './dist/viewport.es.js',
             plugins:[
                 replace({
-                    "../node_modules/three/" : "../../three/"
+                    "../node_modules/three/build/three.module.js" : "three",
+                    "../node_modules/three/examples/jsm/controls/OrbitControls.js" : "OrbitControls"
                 })
             ],
             
