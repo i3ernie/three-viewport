@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import WoodBox from "./WoodBox.js";
-import Viewport from "../src/Viewport.js";
+import Viewport from "../../src/Viewport.js";
 
 
     let el = document.getElementById("viewport");
