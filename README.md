@@ -27,4 +27,5 @@ VP.loop.add( function(){
 
 ### Examples
 
-- Basic [example/basic.html](https://i3ernie.github.io/three-viewport/examples/demo.es.html). 
+- Basic ES6 [example/basic.html](https://i3ernie.github.io/three-viewport/examples/demo.es.html). 
+- Basic AMD [example/basic.amd.html](https://i3ernie.github.io/three-viewport/examples/demo.amd.html). 
