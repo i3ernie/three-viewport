@@ -27,4 +27,4 @@ VP.loop.add( function(){
 
 ### Examples
 
-- Basic [example/basic.html](https://i3ernie.github.io/three-viewport/example/demo.es.html). 
+- Basic [example/basic.html](https://i3ernie.github.io/three-viewport/examples/demo.es.html). 
