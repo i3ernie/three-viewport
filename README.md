@@ -12,7 +12,7 @@ import Viewport from 'viewport.es.js'
 
 let VP = new Viewport();
 
-VP.init.start();
+VP.init().start();
 
 
 //add new scene element
