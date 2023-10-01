@@ -1,4 +1,6 @@
 # three-viewport
+[![DeepScan grade](https://deepscan.io/api/teams/22235/projects/25585/branches/802652/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=22235&pid=25585&bid=802652)
+
 simple viewport with camera and scene and render-loop for three.js
 
 # usage
