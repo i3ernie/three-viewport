@@ -10,10 +10,11 @@ const rollup  = require('rollup');
 const resolve =require('rollup-plugin-node-resolve');
 
 
-var pkg = require('./package.json');
+//var pkg = require('./package.json');
 //var dirs = pkg.directories;
 //var requireconfig = require("./config.json");
 
+/*
 const rollupBuild = function ( inputOptions, outputOptions, done ) {
     // create a bundle
     rollup.rollup(inputOptions).then( function( bundle ){
@@ -31,6 +32,7 @@ const rollupBuild = function ( inputOptions, outputOptions, done ) {
 
     });
 };
+*/
 
 const replace = function( obj ){
     
