@@ -13,6 +13,19 @@ make a simple and fast viewport with camera and scene and render-loop for the th
 import * as THREE from 'three.module.js';
 import Viewport from 'viewport.es.js'
 
+const VP = new Viewport().VP.init().start();
+
+//add new scene element
+VP.scene.add( new THREE.Mesh( new THREE.BoxGeometry(10,10,10) ) );
+
+
+```
+see: [https://i3ernie.github.io/three-viewport/examples/animation.html](https://i3ernie.github.io/three-viewport/examples/min.html)
+
+```javascript
+import * as THREE from 'three.module.js';
+import Viewport from 'viewport.es.js'
+
 let VP = new Viewport();
 
 VP.init();
@@ -28,3 +41,4 @@ VP.loop.add( function(){
   box.position.x = box.position.x + .1
 });
 ```
+see: [https://i3ernie.github.io/three-viewport/examples/animation.html](https://i3ernie.github.io/three-viewport/examples/animation.html)
