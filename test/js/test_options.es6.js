@@ -1,4 +1,3 @@
-import * as THREE from "three";
 import WoodBox from "./WoodBox.js";
 import Viewport from "viewport";
 
