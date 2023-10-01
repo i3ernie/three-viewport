@@ -1,5 +1,5 @@
 {
-  "name": "three-viewport",
+  "name": "@i3ernie/three-viewport",
   "version": "0.151.231001",
   "license": "MIT",
   "description": "viewport for three.js",
