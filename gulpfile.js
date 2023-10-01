@@ -5,18 +5,13 @@
  */
 
 const gulp = require('gulp');
-const sourcemaps = require('gulp-sourcemaps');
-const _ = require('lodash');
-const fs = require('fs');
+
 const rollup  = require('rollup');
 const resolve =require('rollup-plugin-node-resolve');
 
 
-
-const path = require('path');
-
 var pkg = require('./package.json');
-var dirs = pkg.directories;
+//var dirs = pkg.directories;
 //var requireconfig = require("./config.json");
 
 const rollupBuild = function ( inputOptions, outputOptions, done ) {
@@ -69,25 +64,6 @@ gulp.task('default', ( done ) => {
 
 gulp.task('init', ( done ) => {
     
-    var fnc = function( src, dest, req, name, mod )
-    {
-        var end = '';
-        
-        fs.readFile( './node_modules/'+src, 'utf8', ( err, content ) => {
-            if ( err ) { console.log( err ); return; }
-            if ( typeof mod === "string" ) { end = "\n return " + mod + ';';  }
-            var ret = ( typeof req === "string" )? 'define('+req+', function('+name+'){\n' + content + end + "\n});" : content;
-            fs.writeFile(dest, ret, 'utf8', ( err ) => {
-                if ( err ) { console.log( "ERROR: ", err ); }
-            });
-        });
-    };
-    
-    var modules = require("./modules.json");
-    
-    _.each(modules, ( el ) =>{ 
-        fnc(el.src, el.dest, el.req , el.name, el.mod);
-    });    
     done();
     
 });
