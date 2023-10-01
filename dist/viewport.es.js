@@ -8,28 +8,33 @@ export { OrbitControls } from 'OrbitControls';
  * and open the template in the editor.
  */
     
-    var raycaster = new Raycaster();
-    var mouseCoords = new Vector2();
+const raycaster = new Raycaster();
+const mouseCoords = new Vector2();
     
-    var PointerRay = function( VP ){
+    class PointerRay {
+
+        constructor ( VP ) {
+            
+            this.getRay = function( event ) {
+
+                mouseCoords.set(
+                    ( event.clientX / window.innerWidth ) * 2 - 1,
+                    - ( event.clientY / window.innerHeight ) * 2 + 1
+                );
+
+                raycaster.setFromCamera( mouseCoords, VP.camera );
+
+                return raycaster.ray;
+            };
         
-        this.getRay = function( event ){
-             mouseCoords.set(
-                ( event.clientX / window.innerWidth ) * 2 - 1,
-                - ( event.clientY / window.innerHeight ) * 2 + 1
-            );
-            raycaster.setFromCamera( mouseCoords, VP.camera );
-            return raycaster.ray;
-        };
-        
-       
-    };
+        }
+    }
 
 //////////////////////////////////////////////////////////////////////////////////
 //		Loop                            				//
 //////////////////////////////////////////////////////////////////////////////////
 
-    var Loop = function(){
+    const Loop = function(){
         this._fcts = [];
     };
 
@@ -50,7 +55,7 @@ export { OrbitControls } from 'OrbitControls';
      */
     Loop.prototype.remove = function( fct ){
         var index	= this._fcts.indexOf( fct );
-        if( index === -1 )	{ return; }
+        if( index === -1 )	return;
         this._fcts.splice( index,1 );
     };
 
@@ -68,7 +73,7 @@ export { OrbitControls } from 'OrbitControls';
 //////////////////////////////////////////////////////////////////////////////////
 //		THREEx.RenderingLoop						//
 //////////////////////////////////////////////////////////////////////////////////
-var RenderingLoop = function()
+const RenderingLoop = function()
 {
     Loop.call( this );
 
@@ -76,7 +81,7 @@ var RenderingLoop = function()
     var requestId	= null;
     var lastTimeMsec= null;
 	
-    var onRequestAnimationFrame = function( nowMsec ){
+    const onRequestAnimationFrame = function( nowMsec ){
 		// keep looping
 		requestId	= requestAnimationFrame( onRequestAnimationFrame );
 
@@ -115,7 +120,7 @@ var RenderingLoop = function()
      * @returns {undefined}
      */
     this.stop = function(){
-            if( requestId === null )	{ return; }
+            if( requestId === null )	return;
             cancelAnimationFrame( requestId );
             requestId	= null;
     };
@@ -130,7 +135,8 @@ RenderingLoop.prototype = Object.assign( Object.create( Loop.prototype ), {
  */
 
 
-    var defaults = {
+
+    const defaults = {
         $vp             : window.document.getElementsByTagName("body")[0],
         antialias       : "default", //none, default, fxaa, smaa
         renderer        : "standard", //"deferred", "standard"
@@ -139,16 +145,16 @@ RenderingLoop.prototype = Object.assign( Object.create( Loop.prototype ), {
         clearColor      : 'lightgrey',
         alpha           : true,
         opacity         : 0.5,
-        camFov          : 45
+
+        camFov          : 45,
+        cameraPosition     : [0, 0, 400]
     };
     
-    var initRenderer = function(){ 
-        
-        var antialias = (this.options.antialias === "default")? true : false;
+    const initRenderer = function(){ 
 
         this.renderer	= new WebGLRenderer({
-            alpha : true,
-            antialias	: antialias
+            alpha : this.options.alpha,
+            antialias	: (this.options.antialias === "default")? true : false
         });    
 
         this.renderer.setSize( this.options.$vp.clientWidth, this.options.$vp.clientHeight );
@@ -160,23 +166,36 @@ RenderingLoop.prototype = Object.assign( Object.create( Loop.prototype ), {
     };
 
 
-    var initScene = function(){
+    const initScene = function() {
+
         this.scene = this.options.scene || new Scene();
         return this;
+    
     };
     
-    var initCamera = function(){
-        this.camera = this.options.camera || new PerspectiveCamera(this.options.camFov, this.options.$vp.clientWidth / this.options.$vp.clientHeight, 1, 20000);
+    const initCamera = function() {
+        
+        const o = this.options;
+
+        this.camera = o.camera || new PerspectiveCamera(
+            o.camFov, o.$vp.clientWidth / o.$vp.clientHeight, 
+            1, 20000
+        );
+
+        this.camera.position.set( o.cameraPosition[0], o.cameraPosition[1], o.cameraPosition[2] );
+        this.scene.add( this.camera );
+
         return this;
     };
 
-    var initControl = function(){
+    const initControl = function(){
         this.control = this.options.control || new OrbitControls( this.camera, this.renderer.domElement );
         return this;
     };
 
-    var initLoop = function( ){
-        var scope = this;
+    const initLoop = function( ){
+
+        let scope = this;
         this.loop  = new RenderingLoop();
         
         this.loop.add( function()
@@ -185,11 +204,13 @@ RenderingLoop.prototype = Object.assign( Object.create( Loop.prototype ), {
         } );    
         
         return this;
+    
     };
 
-    var initDomElement = function(){
-        var VP = this;
-        var $vp = this.options.$vp;
+    const initDomElement = function(){
+
+        let VP = this;
+        let $vp = this.options.$vp;
        
         if ( this.options.$vp === window || this.options.$vp[0] === window ) { 
             window.document.body.appendChild( this.renderer.domElement );
@@ -216,25 +237,25 @@ RenderingLoop.prototype = Object.assign( Object.create( Loop.prototype ), {
      * @param {type} obj
      * @returns {ViewportL#14.Viewport}
      */
-    class Viewport extends EventDispatcher{ 
-        constructor ( obj )
-        {        
+    class Viewport extends EventDispatcher { 
+
+        constructor ( obj ) {       
+            
             super();
+            
             this.options = Object.assign({}, defaults, obj );
             
             //this.model = new Model();
             this.clock = new Clock();
         }
-    
+
         init () {
 
             initRenderer.call( this ).dispatchEvent({ type:"rendererInitalized" });
 
             initScene.call( this ).dispatchEvent({ type:"sceneInitalized" });
 
-            initCamera.call( this );
-            this.scene.add( this.camera );
-            this.dispatchEvent({ type:"cameraInitalized" });
+            initCamera.call( this ).dispatchEvent({ type:"cameraInitalized" });
 
             initDomElement.call( this ).dispatchEvent({ type:"domeElementInitalized" });
 
@@ -255,18 +276,19 @@ RenderingLoop.prototype = Object.assign( Object.create( Loop.prototype ), {
             return this;
         }
     
-        start (){
-            //this.DomEvents.addEventListener( this.scene, "click", this.onClick );
+        start ( opts ) {
+
             this.clock.getDelta();
             this.loop.start();
 
             this.dispatchEvent({ type:"started" });
             
             return this;
+        
         }
         
-        stop (){
-            //this.DomEvents.removeEventListener( this.scene, "click", this.onClick );
+        stop ( opts ) {
+
             this.loop.stop();
             
             this.dispatchEvent({ type:"stopped" });
@@ -274,25 +296,21 @@ RenderingLoop.prototype = Object.assign( Object.create( Loop.prototype ), {
             return this;
         }
 
-        onUpdateScene ( ev ){
-        }
-        onClick ( ev ){
+        onUpdateScene ( ev ) {
         }
 
         disableControl () {
             this.control.enabled = false;
         }
+
         enableControl () {
             this.control.enabled = true;
         }
     } 
     Viewport.make = function( opts ) {
 
-        var VP = new Viewport( opts );
-        VP.init();
-        VP.start();
-
-        return VP;
+        return new Viewport( opts ).init().start();
+    
     };
 
 export { RenderingLoop, Viewport, Viewport as default };

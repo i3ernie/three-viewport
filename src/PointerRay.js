@@ -3,23 +3,28 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import { Raycaster, Vector2 } from "../node_modules/three/build/three.module.js";
+import { Raycaster, Vector2 } from "three";
     
-    var raycaster = new Raycaster();
-    var mouseCoords = new Vector2();
+const raycaster = new Raycaster();
+const mouseCoords = new Vector2();
     
-    const PointerRay = function( VP ){
+    class PointerRay {
+
+        constructor ( VP ) {
+            
+            this.getRay = function( event ) {
+
+                mouseCoords.set(
+                    ( event.clientX / window.innerWidth ) * 2 - 1,
+                    - ( event.clientY / window.innerHeight ) * 2 + 1
+                );
+
+                raycaster.setFromCamera( mouseCoords, VP.camera );
+
+                return raycaster.ray;
+            };
         
-        this.getRay = function( event ){
-             mouseCoords.set(
-                ( event.clientX / window.innerWidth ) * 2 - 1,
-                - ( event.clientY / window.innerHeight ) * 2 + 1
-            );
-            raycaster.setFromCamera( mouseCoords, VP.camera );
-            return raycaster.ray;
-        };
-        
-       
-    };
+        }
+    }
     
 export default PointerRay;

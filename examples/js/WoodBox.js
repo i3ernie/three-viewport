@@ -1,13 +1,14 @@
-import {TextureLoader, BoxBufferGeometry, MeshBasicMaterial, Mesh} from "../node_modules/three/build/three.module.js";
+import {TextureLoader, BoxGeometry, MeshBasicMaterial, Mesh} from "three";
 
 var texture = new TextureLoader().load( 'textures/crate.gif' );
 
 class WoodBox extends Mesh {
+
     constructor ( geo, mat ) {
-        geo = geo || new BoxBufferGeometry( 200, 200, 200 );
+        geo = geo || new BoxGeometry( 200, 200, 200 );
         mat = mat || new MeshBasicMaterial( { map: texture } );
 
-        super( geo,mat );
+        super( geo, mat );
     }
 };
 

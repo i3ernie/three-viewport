@@ -1,4 +1,4 @@
-define(['exports', 'three', 'OrbitControls'], function ( exports, three_module_js, OrbitControls_js ) { 'use strict';
+define(['exports', 'three', 'OrbitControls'], function (exports, three_module_js, OrbitControls_js) { 'use strict';
 
     /* 
      * To change this license header, choose License Headers in Project Properties.
@@ -214,17 +214,22 @@ define(['exports', 'three', 'OrbitControls'], function ( exports, three_module_j
          * @param {type} obj
          * @returns {ViewportL#14.Viewport}
          */
-        class Viewport extends three_module_js.EventDispatcher{ 
-            constructor ( obj )
-            {        
-                super();
+        var Viewport = /*@__PURE__*/(function (EventDispatcher) {
+        function Viewport ( obj ) {       
+                
+                EventDispatcher.call(this);
+                
                 this.options = Object.assign({}, defaults, obj );
                 
                 //this.model = new Model();
                 this.clock = new three_module_js.Clock();
             }
-        
-            init () {
+
+        if ( EventDispatcher ) Viewport.__proto__ = EventDispatcher;
+        Viewport.prototype = Object.create( EventDispatcher && EventDispatcher.prototype );
+        Viewport.prototype.constructor = Viewport;
+
+            Viewport.prototype.init = function init () {
 
                 initRenderer.call( this ).dispatchEvent({ type:"rendererInitalized" });
 
@@ -251,9 +256,9 @@ define(['exports', 'three', 'OrbitControls'], function ( exports, three_module_j
                 this.dispatchEvent( {type: "initalized" });
                 
                 return this;
-            }
+            };
         
-            start (){
+            Viewport.prototype.start = function start ( opts ) {
                 //this.DomEvents.addEventListener( this.scene, "click", this.onClick );
                 this.clock.getDelta();
                 this.loop.start();
@@ -261,35 +266,35 @@ define(['exports', 'three', 'OrbitControls'], function ( exports, three_module_j
                 this.dispatchEvent({ type:"started" });
                 
                 return this;
-            }
+            };
             
-            stop (){
+            Viewport.prototype.stop = function stop ( opts ) {
                 //this.DomEvents.removeEventListener( this.scene, "click", this.onClick );
                 this.loop.stop();
                 
                 this.dispatchEvent({ type:"stopped" });
                 
                 return this;
-            }
+            };
 
-            onUpdateScene ( ev ){
-            }
-            onClick ( ev ){
-            }
+            Viewport.prototype.onUpdateScene = function onUpdateScene ( ev ) {
+            };
+            Viewport.prototype.onClick = function onClick ( ev ) {
+            };
 
-            disableControl () {
+            Viewport.prototype.disableControl = function disableControl () {
                 this.control.enabled = false;
-            }
-            enableControl () {
+            };
+            Viewport.prototype.enableControl = function enableControl () {
                 this.control.enabled = true;
-            }
-        } 
-        Viewport.make = function( opts ) {
+            };
 
+        return Viewport;
+    }(three_module_js.EventDispatcher)); 
+        Viewport.make = function( opts ){
             var VP = new Viewport( opts );
             VP.init();
             VP.start();
-
             return VP;
         };
 

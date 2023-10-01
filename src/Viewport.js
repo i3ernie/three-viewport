@@ -4,19 +4,14 @@
 
 /**
  * 
- * @param {type} _
- * @param {type} Backbone
- * @param {type} CMD
  * @param {type} Loop
  * @param {type} PointerRay
- * @param {type} Domevents
- * @param {type} model
- * @returns {ViewportL#8.Viewport}
+ * @returns {Viewport}
  */
 
-import { WebGLRenderer, Color, Scene, PerspectiveCamera, Clock, EventDispatcher } from "../node_modules/three/build/three.module.js";
+import { WebGLRenderer, Color, Scene, PerspectiveCamera, Clock, EventDispatcher } from "three";
 import PointerRay from "./PointerRay.js";
-import {OrbitControls} from "../node_modules/three/examples/jsm/controls/OrbitControls.js";
+import {OrbitControls} from "OrbitControls";
 import RenderingLoop from "./loops/RenderingLoop.js";
 
 
@@ -29,16 +24,16 @@ import RenderingLoop from "./loops/RenderingLoop.js";
         clearColor      : 'lightgrey',
         alpha           : true,
         opacity         : 0.5,
-        camFov          : 45
+
+        camFov          : 45,
+        cameraPosition     : [0, 0, 400]
     };
     
     const initRenderer = function(){ 
-        
-        let antialias = (this.options.antialias === "default")? true : false;
 
         this.renderer	= new WebGLRenderer({
-            alpha : true,
-            antialias	: antialias
+            alpha : this.options.alpha,
+            antialias	: (this.options.antialias === "default")? true : false
         });    
 
         this.renderer.setSize( this.options.$vp.clientWidth, this.options.$vp.clientHeight );
@@ -50,13 +45,25 @@ import RenderingLoop from "./loops/RenderingLoop.js";
     };
 
 
-    const initScene = function(){
+    const initScene = function() {
+
         this.scene = this.options.scene || new Scene();
         return this;
+    
     };
     
-    const initCamera = function(){
-        this.camera = this.options.camera || new PerspectiveCamera(this.options.camFov, this.options.$vp.clientWidth / this.options.$vp.clientHeight, 1, 20000);
+    const initCamera = function() {
+        
+        const o = this.options;
+
+        this.camera = o.camera || new PerspectiveCamera(
+            o.camFov, o.$vp.clientWidth / o.$vp.clientHeight, 
+            1, 20000
+        );
+
+        this.camera.position.set( o.cameraPosition[0], o.cameraPosition[1], o.cameraPosition[2] );
+        this.scene.add( this.camera );
+
         return this;
     };
 
@@ -66,6 +73,7 @@ import RenderingLoop from "./loops/RenderingLoop.js";
     };
 
     const initLoop = function( ){
+
         let scope = this;
         this.loop  = new RenderingLoop();
         
@@ -75,9 +83,11 @@ import RenderingLoop from "./loops/RenderingLoop.js";
         } );    
         
         return this;
+    
     };
 
     const initDomElement = function(){
+
         let VP = this;
         let $vp = this.options.$vp;
        
@@ -106,25 +116,25 @@ import RenderingLoop from "./loops/RenderingLoop.js";
      * @param {type} obj
      * @returns {ViewportL#14.Viewport}
      */
-    class Viewport extends EventDispatcher{ 
-        constructor ( obj )
-        {        
+    class Viewport extends EventDispatcher { 
+
+        constructor ( obj ) {       
+            
             super();
+            
             this.options = Object.assign({}, defaults, obj );
             
             //this.model = new Model();
             this.clock = new Clock();
         }
-    
+
         init () {
 
             initRenderer.call( this ).dispatchEvent({ type:"rendererInitalized" });
 
             initScene.call( this ).dispatchEvent({ type:"sceneInitalized" });
 
-            initCamera.call( this );
-            this.scene.add( this.camera );
-            this.dispatchEvent({ type:"cameraInitalized" });
+            initCamera.call( this ).dispatchEvent({ type:"cameraInitalized" });
 
             initDomElement.call( this ).dispatchEvent({ type:"domeElementInitalized" });
 
@@ -145,18 +155,19 @@ import RenderingLoop from "./loops/RenderingLoop.js";
             return this;
         }
     
-        start (){
-            //this.DomEvents.addEventListener( this.scene, "click", this.onClick );
+        start ( opts ) {
+
             this.clock.getDelta();
             this.loop.start();
 
             this.dispatchEvent({ type:"started" });
             
             return this;
+        
         }
         
-        stop (){
-            //this.DomEvents.removeEventListener( this.scene, "click", this.onClick );
+        stop ( opts ) {
+
             this.loop.stop();
             
             this.dispatchEvent({ type:"stopped" });
@@ -164,14 +175,13 @@ import RenderingLoop from "./loops/RenderingLoop.js";
             return this;
         }
 
-        onUpdateScene ( ev ){
-        }
-        onClick ( ev ){
+        onUpdateScene ( ev ) {
         }
 
         disableControl () {
             this.control.enabled = false;
         }
+
         enableControl () {
             this.control.enabled = true;
         }
@@ -179,12 +189,10 @@ import RenderingLoop from "./loops/RenderingLoop.js";
  
     Viewport.make = function( opts ) {
 
-        const VP = new Viewport( opts );
-        VP.init();
-        VP.start();
-
-        return VP;
+        return new Viewport( opts ).init().start();
+    
     };
+    
 
 export default Viewport;
-export { Viewport, RenderingLoop, OrbitControls };
+export {Viewport, RenderingLoop,OrbitControls };

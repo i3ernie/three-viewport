@@ -6,17 +6,12 @@
 
 const gulp = require('gulp');
 const sourcemaps = require('gulp-sourcemaps');
-var plugins = require('gulp-load-plugins')(); // Load all gulp plugins
-                                              // automatically and attach
-                                              // them to the `plugins` object
 const _ = require('lodash');
 const fs = require('fs');
 const rollup  = require('rollup');
 const resolve =require('rollup-plugin-node-resolve');
 
 
-
-const buble = require('rollup-plugin-buble');
 
 const path = require('path');
 
@@ -47,15 +42,21 @@ const replace = function( obj ){
     return { 
         name : "replace",
         generateBundle : function( code, code2 ){ 
-            for ( key in obj ){
-                for ( file in code2 ) {
-                    let str = code2[file].code;
-                    code2[file].code = str.replace(new RegExp(key, "g"), obj[key] );
+            let replacer;
+            for ( var key in obj ){
+                replacer = new RegExp(key,'g');
+                for ( var file in code2 ) {
+                    if (code2[file].code){
+                        code2[file].code = code2[file].code.replace(replacer, obj[key] );
+                    }
+                    
                 }
             }
         }
     };
 };
+
+module.exports = replace;
 
 gulp.task('default', ( done ) => {
     build_viewport( ()=>{
@@ -113,14 +114,9 @@ const build_viewport = function( done ){
         
         plugins:[
 
-            resolve(),
+            resolve()
             
-            buble({
-				transforms: {
-					arrow: false,
-					classes: false
-				}
-			})
+           
         ]
     }).then(( bundle ) => { 
         bundle.write({
@@ -153,26 +149,18 @@ const build_viewportES = function( done ){
    
     rollup.rollup({
         input : 'src/Viewport.js',
-        external: ['../node_modules/three/build/three.module.js', '../node_modules/three/examples/jsm/controls/OrbitControls.js'],
+        external: ['three', '../node_modules/three/examples/jsm/controls/OrbitControls.js'],
         
         plugins:[
             
-            resolve(),
-            
-            buble({
-				transforms: {
-					arrow: false,
-					classes: false
-				}
-            })
+            resolve()
         ]
     }).then(( bundle ) => { 
         bundle.write({
             file: './dist/viewport.es.js',
             plugins:[
                 replace({
-                    "../node_modules/three/build/three.module.js" : "three",
-                    "../node_modules/three/examples/jsm/controls/OrbitControls.js" : "OrbitControls"
+                    "../node_modules/three/" : "three"
                 })
             ],
             
@@ -187,6 +175,12 @@ const build_viewportES = function( done ){
     );
 };
 
-
-
-
+gulp.task("copy", ( done ) => {
+    gulp.src([
+        "./node_modules/three/build/three.module.js",
+        "./node_modules/three/examples/jsm/controls/OrbitControls.js"
+    ])
+    .pipe( gulp.dest("examples/js/vendor/"));
+    
+    done();
+});
