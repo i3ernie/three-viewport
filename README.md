@@ -20,7 +20,7 @@ VP.scene.add( new THREE.Mesh( new THREE.BoxGeometry(10,10,10) ) );
 
 
 ```
-see: [https://i3ernie.github.io/three-viewport/examples/animation.html](https://i3ernie.github.io/three-viewport/examples/min.html)
+see: [https://i3ernie.github.io/three-viewport/examples/min.html](https://i3ernie.github.io/three-viewport/examples/min.html)
 
 ```javascript
 import * as THREE from 'three.module.js';
