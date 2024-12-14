@@ -12,30 +12,32 @@
                 }
             }
         </script>
-            <style>
-                body {
-	                margin: 0;
-                    overscroll-behavior: none;
-                }
-                canvas {
-                    display: block;
-                }
-                
-            </style>
-	    <script type="module" >
-		//import * as THREE from "three";
-		import WoodBox from "./js/WoodBox.js";
-		import Viewport from "viewport";
-		
-		const VP = new Viewport().init().start();
-
-		VP.camera.position.z = 400;
-	
-		VP.scene.add( new WoodBox() );
-	</script>
+        
+        <style>
+            body {
+                margin: 0;
+                overscroll-behavior: none;
+            }
+            canvas {
+                display: block;
+            }
+            
+        </style>
+	    
     </head>
 
     <body>
+        <script type="module" >
+            //import * as THREE from "three";
+            import WoodBox from "./js/WoodBox.js";
+            import Viewport from "viewport";
+            
+            const VP = new Viewport().init().start();
+
+            VP.camera.position.z = 400;
+        
+            VP.scene.add( new WoodBox() );
+        </script>
     </body>
 
 </html>

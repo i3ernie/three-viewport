@@ -1,5 +1,17 @@
 <hhtml>
     <head>
+        
+        <style>
+            body {
+                margin: 0;
+                overscroll-behavior: none;
+            }
+            canvas {
+                display: block;
+            }
+            
+        </style>
+
         <!-- polyfill for importmap -->
         <script async src="../node_modules/es-module-shims/dist/es-module-shims.js"></script>
     
@@ -12,20 +24,23 @@
                 }
             }
         </script>
-        <script type="module" src="./js/test_min.es6.js"></script>
-            <style>
-                body {
-	                margin: 0;
-                    overscroll-behavior: none;
-                }
-                canvas {
-                    display: block;
-                }
-                
-            </style>
     </head>
 
     <body>
+        <script type="module">
+
+            import WoodBox from "./WoodBox.js";
+            import Viewport from "viewport";
+
+                const VP = new Viewport().init({
+                    enableControl:true
+                }).start();
+
+                VP.camera.position.z = 400;
+
+                VP.scene.add( new WoodBox() );
+
+        </script>
     </body>
 
 </hhtml>

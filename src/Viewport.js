@@ -25,6 +25,8 @@ import RenderingLoop from "./loops/RenderingLoop.js";
         alpha           : true,
         opacity         : 0.5,
 
+        enableControl : true,
+
         camFov          : 45,
         cameraPosition     : [0, 0, 400]
     };
@@ -124,11 +126,12 @@ import RenderingLoop from "./loops/RenderingLoop.js";
             
             this.options = Object.assign({}, defaults, obj );
             
-            //this.model = new Model();
             this.clock = new Clock();
         }
 
-        init () {
+        init ( opts ) {
+
+            Object.assign(this.options, opts); 
 
             initRenderer.call( this ).dispatchEvent({ type:"rendererInitalized" });
 

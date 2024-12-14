@@ -1,6 +1,6 @@
 {
   "name": "@i3ernie/three-viewport",
-  "version": "0.151.231001",
+  "version": "0.171.241214",
   "license": "MIT",
   "description": "viewport for three.js",
   "author": "i3ernie",
@@ -12,9 +12,10 @@
     "Viewport"
   ],
   "dependencies": {
-    "three": "^0.151"
+    "three": "^0.171"
   },
   "devDependencies": {
+    "rollup": "latest",
     "@rollup/plugin-inject": "latest",
     "@rollup/plugin-replace": "latest",
     "gulp": "latest",
@@ -25,8 +26,6 @@
     "es-module-shims" : "latest",
     "jshint": "^2.11.1",
     "lodash": "latest",
- 
-    "rollup": "latest",
    
     "rollup-plugin-node-resolve": "latest"
   },
